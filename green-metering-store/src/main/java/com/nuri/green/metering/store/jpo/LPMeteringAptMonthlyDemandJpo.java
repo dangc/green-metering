@@ -1,6 +1,7 @@
 package com.nuri.green.metering.store.jpo;
 
 import com.nuri.green.metering.entity.LPMeteringApt;
+import com.nuri.green.metering.entity.LPMeteringAptBilling;
 import com.nuri.green.metering.entity.LPMeteringMonthlyDemandRdo;
 import com.nuri.green.metering.page.CommonObj;
 import lombok.Getter;
@@ -71,19 +72,19 @@ public class LPMeteringAptMonthlyDemandJpo extends CommonObj {
     private Integer offset; // offset
     private Integer limit; // limit
 
-    public LPMeteringAptMonthlyDemandJpo(LPMeteringApt lpMeteringApt) {
-        if(lpMeteringApt != null) {
-            BeanUtils.copyProperties(lpMeteringApt, this);
+    public LPMeteringAptMonthlyDemandJpo(LPMeteringAptBilling lpMeteringAptBilling) {
+        if(lpMeteringAptBilling != null) {
+            BeanUtils.copyProperties(lpMeteringAptBilling, this);
         }
 
         // page
-        if(lpMeteringApt.getOffset() != null && lpMeteringApt.getLimit() != null) {
-            setPage(lpMeteringApt.getOffset(), lpMeteringApt.getLimit());
+        if(lpMeteringAptBilling.getOffset() != null && lpMeteringAptBilling.getLimit() != null) {
+            setPage(lpMeteringAptBilling.getOffset(), lpMeteringAptBilling.getLimit());
         }
 
         // order
-        if(lpMeteringApt.getOrderby() != null) {
-            setOrder(lpMeteringApt.getOrderby());
+        if(lpMeteringAptBilling.getOrderby() != null) {
+            setOrder(lpMeteringAptBilling.getOrderby());
         }
     }
 

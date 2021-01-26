@@ -99,7 +99,7 @@
             , a.DEVICE_SERIAL as deviceSerial
             , a.REG_DT as regDt
             , a.UPDATE_DT as updateDt
-        FROM R1.gnd_meter_value a
+        FROM gnd_meter_value a
         LEFT OUTER JOIN gnd_apt_info b ON a.APT_NO = b.APT_NO
         <include refid="base_where_list" />
         <include refid="order_by_list" />
@@ -157,7 +157,7 @@
                     , a.ITIME AS itime
                     , a.DEVICE_ID AS deviceId
                     , a.DEVICE_SERIAL AS deviceSerial
-                FROM R1.gnd_meter_value a
+                FROM gnd_meter_value a
                 LEFT OUTER JOIN gnd_apt_info b ON a.APT_NO = b.APT_NO
                 <include refid="base_where_list" />
                 GROUP BY
@@ -240,7 +240,7 @@
             , b.APT_NM AS aptNm
             , a.reg_dt
             , a.update_dt
-        FROM R1.gnd_meter_billing a
+        FROM gnd_meter_billing a
         LEFT OUTER JOIN gnd_apt_info b ON a.APT_NO = b.APT_NO
         <include refid="base_where_list" />
         <include refid="order_by_list" />
@@ -294,7 +294,7 @@
 <!--            , b.APT_NM AS aptNm-->
             , reg_dt
             , update_dt
-        FROM R1.gnd_meter_monthly_demand a
+        FROM gnd_meter_monthly_demand a
         <include refid="base_where_list" />
         <include refid="order_by_list" />
         <include refid="page_limit" />
@@ -314,7 +314,7 @@
             , apt_no
             , reg_dt
             , update_dt
-        FROM R1.gnd_meter_event_log a
+        FROM gnd_meter_event_log a
         <include refid="base_where_list_event" />
         <include refid="order_by_list" />
         <include refid="page_limit" />
@@ -328,7 +328,7 @@
             , FNC_GET_CODE_NM(channel) as channelNm
             , channel_idx
             , use_yn
-        FROM R1.gnd_channel_config a
+        FROM gnd_channel_config a
         WHERE 1=1
         <if test="meterType != null" >
             AND a.METER_TYPE = #{meterType}
@@ -339,7 +339,7 @@
         SELECT
             meter_type
             , FNC_GET_CODE_NM(meter_type) as meterTypeNm
-        FROM R1.gnd_meter_info a
+        FROM gnd_meter_info a
         WHERE 1=1
         <if test="meterId != null" >
             AND a.METER_ID = #{meterId}

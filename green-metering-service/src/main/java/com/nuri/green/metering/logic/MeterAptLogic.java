@@ -25,17 +25,17 @@ public class MeterAptLogic implements MeterAptService {
     }
 
     @Override
-    public List<LPMeteringBillingRdo> getLPMeteringAptBilling(LPMeteringApt lpMeteringApt) {
-        return meterAptStore.getLPMeteringAptBilling(lpMeteringApt);
+    public List<LPMeteringBillingRdo> getLPMeteringAptBilling(LPMeteringAptBilling lpMeteringAptBilling) {
+        return meterAptStore.getLPMeteringAptBilling(lpMeteringAptBilling);
     }
 
     @Override
-    public List<LPMeteringMonthlyDemandRdo> getLPMeteringAptMonthlyDemand(LPMeteringApt lpMeteringApt) {
-        return meterAptStore.getLPMeteringAptMonthlyDemand(lpMeteringApt);
+    public List<LPMeteringMonthlyDemandRdo> getLPMeteringAptMonthlyDemand(LPMeteringAptBilling lpMeteringAptBilling) {
+        return meterAptStore.getLPMeteringAptMonthlyDemand(lpMeteringAptBilling);
     }
 
     @Override
-    public List<LPMeteringEventLogRdo> getLPMeteringAptEventLog(LPMeteringApt lpMeteringApt) {
-        return meterAptStore.getLPMeteringAptEventLog(lpMeteringApt);
+    public List<LPMeteringEventLogRdo> getLPMeteringAptEventLog(LPMeteringAptEvent lpMeteringAptEvent) {
+        return meterAptStore.getLPMeteringAptEventLog(lpMeteringAptEvent);
     }
 }

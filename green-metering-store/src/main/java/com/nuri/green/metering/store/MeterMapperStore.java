@@ -24,26 +24,26 @@ public class MeterMapperStore implements MeterStore {
     }
 
     @Override
-    public List<LPMeteringByChannelRdo> getLPMeteringByChannel(LPMetering lpMetering) {
-        List<LPMeteringByChannelJpo> lpMeteringByChannelJpos = meterEventMapper.getLPMeteringByChannel(new LPMeteringByChannelJpo(lpMetering));
+    public List<LPMeteringByChannelRdo> getLPMeteringByChannel(LPMeteringByChannel lpMeteringByChannel) {
+        List<LPMeteringByChannelJpo> lpMeteringByChannelJpos = meterEventMapper.getLPMeteringByChannel(new LPMeteringByChannelJpo(lpMeteringByChannel));
         return lpMeteringByChannelJpos.stream().map(LPMeteringByChannelJpo::toDomain).collect(Collectors.toList());
     }
 
     @Override
-    public List<LPMeteringBillingRdo> getLPMeteringBilling(LPMetering lpMetering) {
-        List<LPMeteringBillingJpo> lpMeteringBillingJpos = meterEventMapper.getLPMeteringBilling(new LPMeteringBillingJpo(lpMetering));
+    public List<LPMeteringBillingRdo> getLPMeteringBilling(LPMeteringByChannel lpMeteringByChannel) {
+        List<LPMeteringBillingJpo> lpMeteringBillingJpos = meterEventMapper.getLPMeteringBilling(new LPMeteringBillingJpo(lpMeteringByChannel));
         return lpMeteringBillingJpos.stream().map(LPMeteringBillingJpo::toDomain).collect(Collectors.toList());
     }
 
     @Override
-    public List<LPMeteringMonthlyDemandRdo> getLPMeteringMonthlyDemand(LPMetering lpMetering) {
-        List<LPMeteringMonthlyDemandJpo> lpMeteringMonthlyDemandJpos = meterEventMapper.getLPMeteringMonthlyDemand(new LPMeteringMonthlyDemandJpo(lpMetering));
+    public List<LPMeteringMonthlyDemandRdo> getLPMeteringMonthlyDemand(LPMeteringByChannel lpMeteringByChannel) {
+        List<LPMeteringMonthlyDemandJpo> lpMeteringMonthlyDemandJpos = meterEventMapper.getLPMeteringMonthlyDemand(new LPMeteringMonthlyDemandJpo(lpMeteringByChannel));
         return lpMeteringMonthlyDemandJpos.stream().map(LPMeteringMonthlyDemandJpo::toDomain).collect(Collectors.toList());
     }
 
     @Override
-    public List<LPMeteringEventLogRdo> getLPMeteringEventLog(LPMetering lpMetering) {
-        List<LPMeteringEventLogJpo> lpMeteringEventLogJpos = meterEventMapper.getLPMeteringEventLog(new LPMeteringEventLogJpo(lpMetering));
+    public List<LPMeteringEventLogRdo> getLPMeteringEventLog(LPMeteringEvent lpMeteringEvent) {
+        List<LPMeteringEventLogJpo> lpMeteringEventLogJpos = meterEventMapper.getLPMeteringEventLog(new LPMeteringEventLogJpo(lpMeteringEvent));
         return lpMeteringEventLogJpos.stream().map(LPMeteringEventLogJpo::toDomain).collect(Collectors.toList());
     }
 

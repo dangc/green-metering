@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin("*")
 @Api(description = "미터별 전력사용량 조회 Resource")
-@RequestMapping("/v1.0")
+@RequestMapping("/green/v1.0")
 public class MeteringMeterResource {
     private MeterService meterService;
 
@@ -26,14 +26,8 @@ public class MeteringMeterResource {
 
     @ApiOperation(value = "미터별 전력사용량 (LP) 조회", notes = "IF-GND-METER-001")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "regionId", value = "region 아이디", required = true, dataType = "string", paramType = "path", defaultValue = ""),
-            @ApiImplicitParam(name = "meterId", value = "미터 아이디", required = true, dataType = "Integer", paramType = "path", defaultValue = ""),
-            @ApiImplicitParam(name = "channel", value = "채널", required = true, dataType = "string", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "startDate", value = "검침시작일자", required = true, dataType = "string", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "endDate", value = "검침종료일자", required = true, dataType = "string", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "offset", value = "데이터 커서 위치", required = true, dataType = "Integer", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "limit", value = "Grid 리스트 수", required = true, dataType = "Integer", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "page", value = "현재 페이지", required = true, dataType = "Integer", paramType = "query", defaultValue = "")
+            @ApiImplicitParam(name = "regionId", value = "region 아이디", required = true, paramType = "path", defaultValue = ""),
+            @ApiImplicitParam(name = "meterId", value = "미터 아이디", required = true, paramType = "path", defaultValue = "")
     })
     @GetMapping(value={"regions/{regionId}/meters/{meterId}/lp"})
     public ResponseMessage getLPMeteringByMeter(@RequestHeader HttpHeaders headers, LPMetering lpMetering){
@@ -44,137 +38,86 @@ public class MeteringMeterResource {
         result.setTotalCnt(result.getDatas().size());
 
         ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
-        if(result != null && result.getDatas().size() != 0) {
-            responseMessage = new ResponseMessage(ResultCode.Y, result);
-        } else {
-            String errMsg = ErrorCode.E2001.getMsg();
-            responseMessage = new ResponseMessage(ResultCode.N, ErrorCode.E2001, errMsg);
-        }
 
         return responseMessage;
     }
 
     @ApiOperation(value = "미터별 채널별 전력사용량 (LP) 조회", notes = "IF-GND-METER-002")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "regionId", value = "region 아이디", required = true, dataType = "string", paramType = "path", defaultValue = ""),
-            @ApiImplicitParam(name = "meterId", value = "미터 아이디", required = true, dataType = "Integer", paramType = "path", defaultValue = ""),
-            @ApiImplicitParam(name = "startDate", value = "검침시작일자", required = true, dataType = "string", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "endDate", value = "검침종료일자", required = true, dataType = "string", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "offset", value = "데이터 커서 위치", required = true, dataType = "Integer", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "limit", value = "Grid 리스트 수", required = true, dataType = "Integer", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "page", value = "현재 페이지", required = true, dataType = "Integer", paramType = "query", defaultValue = "")
+            @ApiImplicitParam(name = "regionId", value = "region 아이디", required = true, paramType = "path", defaultValue = ""),
+            @ApiImplicitParam(name = "meterId", value = "미터 아이디", required = true, paramType = "path", defaultValue = "")
     })
     @GetMapping(value={"regions/{regionId}/meters/{meterId}/lpByChannel"})
-    public ResponseMessage getLPMeteringByChannel(@RequestHeader HttpHeaders headers, LPMetering lpMetering){
-        System.out.println(lpMetering.toString());
+    public ResponseMessage getLPMeteringByChannel(@RequestHeader HttpHeaders headers, LPMeteringByChannel lpMeteringByChannel){
+        System.out.println(lpMeteringByChannel.toString());
 
         PagingGridResult result = new PagingGridResult();
-        result.setDatas(this.meterService.getLPMeteringByChannel(lpMetering));
+        result.setDatas(this.meterService.getLPMeteringByChannel(lpMeteringByChannel));
         result.setTotalCnt(result.getDatas().size());
 
         ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
-        if(result != null && result.getDatas().size() != 0) {
-            responseMessage = new ResponseMessage(ResultCode.Y, result);
-        } else {
-            String errMsg = ErrorCode.E2001.getMsg();
-            responseMessage = new ResponseMessage(ResultCode.N, ErrorCode.E2001, errMsg);
-        }
 
         return responseMessage;
     }
 
     @ApiOperation(value = "미터별 검침데이터 (정기검침) 조회", notes = "IF-GND-METER-003")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "regionId", value = "region 아이디", required = true, dataType = "string", paramType = "path", defaultValue = ""),
-            @ApiImplicitParam(name = "meterId", value = "미터 아이디", required = true, dataType = "Integer", paramType = "path", defaultValue = ""),
-            @ApiImplicitParam(name = "startDate", value = "검침시작일자", required = true, dataType = "string", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "endDate", value = "검침종료일자", required = true, dataType = "string", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "offset", value = "데이터 커서 위치", required = true, dataType = "Integer", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "limit", value = "Grid 리스트 수", required = true, dataType = "Integer", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "page", value = "현재 페이지", required = true, dataType = "Integer", paramType = "query", defaultValue = "")
+            @ApiImplicitParam(name = "regionId", value = "region 아이디", required = true, paramType = "path", defaultValue = ""),
+            @ApiImplicitParam(name = "meterId", value = "미터 아이디", required = true, paramType = "path", defaultValue = "")
     })
     @GetMapping(value={"regions/{regionId}/meters/{meterId}/billing"})
-    public ResponseMessage getLPMeteringBilling(@RequestHeader HttpHeaders headers, LPMetering lpMetering){
-        System.out.println(lpMetering.toString());
+    public ResponseMessage getLPMeteringBilling(@RequestHeader HttpHeaders headers, LPMeteringByChannel lpMeteringByChannel){
+        System.out.println(lpMeteringByChannel.toString());
 
         PagingGridResult result = new PagingGridResult();
-        result.setDatas(this.meterService.getLPMeteringBilling(lpMetering));
+        result.setDatas(this.meterService.getLPMeteringBilling(lpMeteringByChannel));
         result.setTotalCnt(result.getDatas().size());
 
         ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
-        if(result != null && result.getDatas().size() != 0) {
-            responseMessage = new ResponseMessage(ResultCode.Y, result);
-        } else {
-            String errMsg = ErrorCode.E2001.getMsg();
-            responseMessage = new ResponseMessage(ResultCode.N, ErrorCode.E2001, errMsg);
-        }
 
         return responseMessage;
     }
 
     @ApiOperation(value = "미터별 검침데이터 (월별최대수요) 조회", notes = "IF-GND-METER-004")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "regionId", value = "region 아이디", required = true, dataType = "string", paramType = "path", defaultValue = ""),
-            @ApiImplicitParam(name = "meterId", value = "미터 아이디", required = true, dataType = "Integer", paramType = "path", defaultValue = ""),
-            @ApiImplicitParam(name = "startDate", value = "검침시작일자", required = true, dataType = "string", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "endDate", value = "검침종료일자", required = true, dataType = "string", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "offset", value = "데이터 커서 위치", required = true, dataType = "Integer", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "limit", value = "Grid 리스트 수", required = true, dataType = "Integer", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "page", value = "현재 페이지", required = true, dataType = "Integer", paramType = "query", defaultValue = "")
+            @ApiImplicitParam(name = "regionId", value = "region 아이디", required = true, paramType = "path", defaultValue = ""),
+            @ApiImplicitParam(name = "meterId", value = "미터 아이디", required = true, paramType = "path", defaultValue = "")
     })
     @GetMapping(value={"regions/{regionId}/meters/{meterId}/monthly-demand"})
-    public ResponseMessage getLPMeteringMonthlyDemand(@RequestHeader HttpHeaders headers, LPMetering lpMetering){
-        System.out.println(lpMetering.toString());
+    public ResponseMessage getLPMeteringMonthlyDemand(@RequestHeader HttpHeaders headers, LPMeteringByChannel lpMeteringByChannel){
+        System.out.println(lpMeteringByChannel.toString());
 
         PagingGridResult result = new PagingGridResult();
-        result.setDatas(this.meterService.getLPMeteringMonthlyDemand(lpMetering));
+        result.setDatas(this.meterService.getLPMeteringMonthlyDemand(lpMeteringByChannel));
         result.setTotalCnt(result.getDatas().size());
 
         ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
-        if(result != null && result.getDatas().size() != 0) {
-            responseMessage = new ResponseMessage(ResultCode.Y, result);
-        } else {
-            String errMsg = ErrorCode.E2001.getMsg();
-            responseMessage = new ResponseMessage(ResultCode.N, ErrorCode.E2001, errMsg);
-        }
 
         return responseMessage;
     }
 
     @ApiOperation(value = "미터별 미터 이벤트 이력 조회", notes = "IF-GND-METER-005")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "regionId", value = "region 아이디", required = true, dataType = "string", paramType = "path", defaultValue = ""),
-            @ApiImplicitParam(name = "meterId", value = "미터 아이디", required = true, dataType = "Integer", paramType = "path", defaultValue = ""),
-            @ApiImplicitParam(name = "eventCd", value = "이벤트코드", required = true, dataType = "string", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "startDate", value = "검침시작일자", required = true, dataType = "string", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "endDate", value = "검침종료일자", required = true, dataType = "string", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "offset", value = "데이터 커서 위치", required = true, dataType = "Integer", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "limit", value = "Grid 리스트 수", required = true, dataType = "Integer", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "page", value = "현재 페이지", required = true, dataType = "Integer", paramType = "query", defaultValue = "")
+            @ApiImplicitParam(name = "regionId", value = "region 아이디", required = true, paramType = "path", defaultValue = ""),
+            @ApiImplicitParam(name = "meterId", value = "미터 아이디", required = true, paramType = "path", defaultValue = "")
     })
     @GetMapping(value={"regions/{regionId}/meters/{meterId}/events-log"})
-    public ResponseMessage getLPMeteringEventLog(@RequestHeader HttpHeaders headers, LPMetering lpMetering){
-        System.out.println(lpMetering.toString());
+    public ResponseMessage getLPMeteringEventLog(@RequestHeader HttpHeaders headers, LPMeteringEvent lpMeteringEvent){
+        System.out.println(lpMeteringEvent.toString());
 
         PagingGridResult result = new PagingGridResult();
-        result.setDatas(this.meterService.getLPMeteringEventLog(lpMetering));
+        result.setDatas(this.meterService.getLPMeteringEventLog(lpMeteringEvent));
         result.setTotalCnt(result.getDatas().size());
 
         ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
-        if(result != null && result.getDatas().size() != 0) {
-            responseMessage = new ResponseMessage(ResultCode.Y, result);
-        } else {
-            String errMsg = ErrorCode.E2001.getMsg();
-            responseMessage = new ResponseMessage(ResultCode.N, ErrorCode.E2001, errMsg);
-        }
 
         return responseMessage;
     }
 
     @ApiOperation(value = "미터타입별 LP 채널 조회", notes = "IF-GND-METER-010")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "regionId", value = "region 아이디", required = true, dataType = "string", paramType = "path", defaultValue = ""),
-            @ApiImplicitParam(name = "meterId", value = "미터 아이디", required = true, dataType = "Integer", paramType = "path", defaultValue = "")
+            @ApiImplicitParam(name = "regionId", value = "region 아이디", required = true, paramType = "path", defaultValue = ""),
+            @ApiImplicitParam(name = "meterType", value = "미터 타입", required = true, paramType = "path", defaultValue = "")
     })
     @GetMapping(value={"regions/{regionId}/meters/{meterType}/channels"})
     public ResponseMessage getLPMeteringChannel(@RequestHeader HttpHeaders headers, LPChannel lpChannel){
@@ -185,12 +128,6 @@ public class MeteringMeterResource {
         result.setTotalCnt(result.getDatas().size());
 
         ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
-        if(result != null && result.getDatas().size() != 0) {
-            responseMessage = new ResponseMessage(ResultCode.Y, result);
-        } else {
-            String errMsg = ErrorCode.E2001.getMsg();
-            responseMessage = new ResponseMessage(ResultCode.N, ErrorCode.E2001, errMsg);
-        }
 
         return responseMessage;
     }

@@ -24,23 +24,23 @@ public class MeterLogic implements MeterService {
     }
 
     @Override
-    public List<LPMeteringByChannelRdo> getLPMeteringByChannel(LPMetering lpMetering) {
-        return meterStore.getLPMeteringByChannel(lpMetering);
+    public List<LPMeteringByChannelRdo> getLPMeteringByChannel(LPMeteringByChannel lpMeteringByChannel) {
+        return meterStore.getLPMeteringByChannel(lpMeteringByChannel);
     }
 
     @Override
-    public List<LPMeteringBillingRdo> getLPMeteringBilling(LPMetering lpMetering) {
-        return meterStore.getLPMeteringBilling(lpMetering);
+    public List<LPMeteringBillingRdo> getLPMeteringBilling(LPMeteringByChannel lpMeteringByChannel) {
+        return meterStore.getLPMeteringBilling(lpMeteringByChannel);
     }
 
     @Override
-    public List<LPMeteringMonthlyDemandRdo> getLPMeteringMonthlyDemand(LPMetering lpMetering) {
-        return meterStore.getLPMeteringMonthlyDemand(lpMetering);
+    public List<LPMeteringMonthlyDemandRdo> getLPMeteringMonthlyDemand(LPMeteringByChannel lpMeteringByChannel) {
+        return meterStore.getLPMeteringMonthlyDemand(lpMeteringByChannel);
     }
 
     @Override
-    public List<LPMeteringEventLogRdo> getLPMeteringEventLog(LPMetering lpMetering) {
-        return meterStore.getLPMeteringEventLog(lpMetering);
+    public List<LPMeteringEventLogRdo> getLPMeteringEventLog(LPMeteringEvent lpMeteringEvent) {
+        return meterStore.getLPMeteringEventLog(lpMeteringEvent);
     }
 
     @Override

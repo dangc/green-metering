@@ -2,6 +2,7 @@ package com.nuri.green.metering.store.jpo;
 
 import com.nuri.green.metering.entity.LPMetering;
 import com.nuri.green.metering.entity.LPMeteringBillingRdo;
+import com.nuri.green.metering.entity.LPMeteringByChannel;
 import com.nuri.green.metering.page.CommonObj;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -67,19 +68,19 @@ public class LPMeteringBillingJpo extends CommonObj {
     private Integer offset; // offset
     private Integer limit; // limit
 
-    public LPMeteringBillingJpo(LPMetering lpMetering) {
-        if(lpMetering != null) {
-            BeanUtils.copyProperties(lpMetering, this);
+    public LPMeteringBillingJpo(LPMeteringByChannel lpMeteringByChannel) {
+        if(lpMeteringByChannel != null) {
+            BeanUtils.copyProperties(lpMeteringByChannel, this);
         }
 
         // page
-        if(lpMetering.getOffset() != null && lpMetering.getLimit() != null) {
-            setPage(lpMetering.getOffset(), lpMetering.getLimit());
+        if(lpMeteringByChannel.getOffset() != null && lpMeteringByChannel.getLimit() != null) {
+            setPage(lpMeteringByChannel.getOffset(), lpMeteringByChannel.getLimit());
         }
 
         // order
-        if(lpMetering.getOrderby() != null) {
-            setOrder(lpMetering.getOrderby());
+        if(lpMeteringByChannel.getOrderby() != null) {
+            setOrder(lpMeteringByChannel.getOrderby());
         }
     }
 

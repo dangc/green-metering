@@ -9,14 +9,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@ApiModel(value = "LPMeteringApt", description = "단지별 전력사용량 (LP) 모델")
-public class LPMeteringApt {
+@ApiModel(value = "LPMeteringEvent", description = "미터별 미터 이벤트 이력 모델")
+public class LPMeteringEvent {
 
+    @ApiModelProperty(required = true, value = "region 아이디")
     private String regionId;
-    private String aptNo;
+    @ApiModelProperty(required = true, value = "미터 아이디")
     private Integer meterId;
-    private Integer measurementPointId;
-    private String channel;
+    private String eventCd;
     private String startDate;
     private String endDate;
 
@@ -31,12 +31,10 @@ public class LPMeteringApt {
 
     @Override
     public String toString() {
-        return "LPMeteringApt{" +
+        return "LPMeteringEvent{" +
                 "regionId='" + regionId + '\'' +
-                ", aptNo='" + aptNo + '\'' +
                 ", meterId=" + meterId +
-                ", measurementPointId=" + measurementPointId +
-                ", channel='" + channel + '\'' +
+                ", eventCd='" + eventCd + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", endDate='" + endDate + '\'' +
                 ", orderby='" + orderby + '\'' +

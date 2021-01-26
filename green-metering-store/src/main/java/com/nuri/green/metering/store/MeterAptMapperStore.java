@@ -24,20 +24,20 @@ public class MeterAptMapperStore implements MeterAptStore {
     }
 
     @Override
-    public List<LPMeteringBillingRdo> getLPMeteringAptBilling(LPMeteringApt lpMeteringApt) {
-        List<LPMeteringAptBillingJpo> lpMeteringAptBillingJpos = meterAptMapper.getLPMeteringAptBilling(new LPMeteringAptBillingJpo(lpMeteringApt));
+    public List<LPMeteringBillingRdo> getLPMeteringAptBilling(LPMeteringAptBilling lpMeteringAptBilling) {
+        List<LPMeteringAptBillingJpo> lpMeteringAptBillingJpos = meterAptMapper.getLPMeteringAptBilling(new LPMeteringAptBillingJpo(lpMeteringAptBilling));
         return lpMeteringAptBillingJpos.stream().map(LPMeteringAptBillingJpo::toDomain).collect(Collectors.toList());
     }
 
     @Override
-    public List<LPMeteringMonthlyDemandRdo> getLPMeteringAptMonthlyDemand(LPMeteringApt lpMeteringApt) {
-        List<LPMeteringAptMonthlyDemandJpo> lpMeteringAptMonthlyDemandJpos = meterAptMapper.getLPMeteringAptMonthlyDemand(new LPMeteringAptMonthlyDemandJpo(lpMeteringApt));
+    public List<LPMeteringMonthlyDemandRdo> getLPMeteringAptMonthlyDemand(LPMeteringAptBilling lpMeteringAptBilling) {
+        List<LPMeteringAptMonthlyDemandJpo> lpMeteringAptMonthlyDemandJpos = meterAptMapper.getLPMeteringAptMonthlyDemand(new LPMeteringAptMonthlyDemandJpo(lpMeteringAptBilling));
         return lpMeteringAptMonthlyDemandJpos.stream().map(LPMeteringAptMonthlyDemandJpo::toDomain).collect(Collectors.toList());
     }
 
     @Override
-    public List<LPMeteringEventLogRdo> getLPMeteringAptEventLog(LPMeteringApt lpMeteringApt) {
-        List<LPMeteringAptEventLogJpo> lpMeteringAptEventLogJpos = meterAptMapper.getLPMeteringAptEventLog(new LPMeteringAptEventLogJpo(lpMeteringApt));
+    public List<LPMeteringEventLogRdo> getLPMeteringAptEventLog(LPMeteringAptEvent lpMeteringAptEvent) {
+        List<LPMeteringAptEventLogJpo> lpMeteringAptEventLogJpos = meterAptMapper.getLPMeteringAptEventLog(new LPMeteringAptEventLogJpo(lpMeteringAptEvent));
         return lpMeteringAptEventLogJpos.stream().map(LPMeteringAptEventLogJpo::toDomain).collect(Collectors.toList());
     }
 }

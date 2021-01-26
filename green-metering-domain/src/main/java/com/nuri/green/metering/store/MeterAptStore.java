@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MeterAptStore {
     List<LPMeteringByMeterRdo> getLPMeteringByApt(LPMeteringApt lpMeteringApt);
-    List<LPMeteringBillingRdo> getLPMeteringAptBilling(LPMeteringApt lpMeteringApt);
-    List<LPMeteringMonthlyDemandRdo> getLPMeteringAptMonthlyDemand(LPMeteringApt lpMeteringApt);
-    List<LPMeteringEventLogRdo> getLPMeteringAptEventLog(LPMeteringApt lpMeteringApt);
+    List<LPMeteringBillingRdo> getLPMeteringAptBilling(LPMeteringAptBilling lpMeteringAptBilling);
+    List<LPMeteringMonthlyDemandRdo> getLPMeteringAptMonthlyDemand(LPMeteringAptBilling lpMeteringAptBilling);
+    List<LPMeteringEventLogRdo> getLPMeteringAptEventLog(LPMeteringAptEvent lpMeteringAptEvent);
 }

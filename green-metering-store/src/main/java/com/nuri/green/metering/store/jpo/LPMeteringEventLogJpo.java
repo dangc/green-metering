@@ -1,6 +1,7 @@
 package com.nuri.green.metering.store.jpo;
 
 import com.nuri.green.metering.entity.LPMetering;
+import com.nuri.green.metering.entity.LPMeteringEvent;
 import com.nuri.green.metering.entity.LPMeteringEventLogRdo;
 import com.nuri.green.metering.page.CommonObj;
 import lombok.Getter;
@@ -39,19 +40,19 @@ public class LPMeteringEventLogJpo extends CommonObj {
     private Integer offset; // offset
     private Integer limit; // limit
 
-    public LPMeteringEventLogJpo(LPMetering lpMetering) {
-        if(lpMetering != null) {
-            BeanUtils.copyProperties(lpMetering, this);
+    public LPMeteringEventLogJpo(LPMeteringEvent lpMeteringEvent) {
+        if(lpMeteringEvent != null) {
+            BeanUtils.copyProperties(lpMeteringEvent, this);
         }
 
         // page
-        if(lpMetering.getOffset() != null && lpMetering.getLimit() != null) {
-            setPage(lpMetering.getOffset(), lpMetering.getLimit());
+        if(lpMeteringEvent.getOffset() != null && lpMeteringEvent.getLimit() != null) {
+            setPage(lpMeteringEvent.getOffset(), lpMeteringEvent.getLimit());
         }
 
         // order
-        if(lpMetering.getOrderby() != null) {
-            setOrder(lpMetering.getOrderby());
+        if(lpMeteringEvent.getOrderby() != null) {
+            setOrder(lpMeteringEvent.getOrderby());
         }
     }
 

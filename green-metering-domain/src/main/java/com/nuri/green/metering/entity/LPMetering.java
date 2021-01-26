@@ -12,10 +12,11 @@ import lombok.Setter;
 @ApiModel(value = "LPMetering", description = "미터별 전력사용량 (LP) 모델")
 public class LPMetering {
 
+    @ApiModelProperty(required = true, value = "region 아이디")
     private String regionId;
+    @ApiModelProperty(required = true, value = "미터 아이디")
     private Integer meterId;
     private String channel;
-    private String eventCd;
     private String startDate;
     private String endDate;
 
@@ -32,7 +33,7 @@ public class LPMetering {
     public String toString() {
         return "LPMetering{" +
                 "regionId='" + regionId + '\'' +
-                ", meterId='" + meterId + '\'' +
+                ", meterId=" + meterId +
                 ", channel='" + channel + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", endDate='" + endDate + '\'' +
