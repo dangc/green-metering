@@ -25,7 +25,9 @@ public class MeterMapperStore implements MeterStore {
 
     @Override
     public List<LPMeteringByChannelRdo> getLPMeteringByChannel(LPMeteringByChannel lpMeteringByChannel) {
-        List<LPMeteringByChannelJpo> lpMeteringByChannelJpos = meterEventMapper.getLPMeteringByChannel(new LPMeteringByChannelJpo(lpMeteringByChannel));
+        List<LPMeteringByChannelJpo> lpMeteringByChannelJpos = null;
+
+                lpMeteringByChannelJpos =   meterEventMapper.getLPMeteringByChannel(new LPMeteringByChannelJpo(lpMeteringByChannel));
         return lpMeteringByChannelJpos.stream().map(LPMeteringByChannelJpo::toDomain).collect(Collectors.toList());
     }
 

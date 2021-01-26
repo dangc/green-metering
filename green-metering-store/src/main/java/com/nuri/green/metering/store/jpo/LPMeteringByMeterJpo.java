@@ -63,22 +63,6 @@ public class LPMeteringByMeterJpo extends CommonObj {
         }
     }
 
-    public LPMeteringByMeterJpo(LPMeteringApt lpMeteringApt) {
-        if(lpMeteringApt != null) {
-            BeanUtils.copyProperties(lpMeteringApt, this);
-        }
-
-        // page
-        if(lpMeteringApt.getOffset() != null && lpMeteringApt.getLimit() != null) {
-            setPage(lpMeteringApt.getOffset(), lpMeteringApt.getLimit());
-        }
-
-        // order
-        if(lpMeteringApt.getOrderby() != null) {
-            setOrder(lpMeteringApt.getOrderby());
-        }
-    }
-
     public LPMeteringByMeterRdo toDomain(){
         LPMeteringByMeterRdo lpMeteringByMeterRdo = new LPMeteringByMeterRdo();
         BeanUtils.copyProperties(this, lpMeteringByMeterRdo);

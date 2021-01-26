@@ -18,10 +18,8 @@ public class LPMeteringByChannelJpo extends CommonObj {
 
     private Integer meterId;
     private String meterSerial;
+    private Integer measurementPointId;
     private String readDt;
-    private String channel;
-    private String channelNm;
-    private String measurementPointId;
     private Integer captureDiv;
     private double meterValueCh1;
     private double meterValueIntervalCh1;

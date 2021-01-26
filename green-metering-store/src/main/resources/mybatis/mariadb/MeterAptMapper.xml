@@ -89,7 +89,7 @@
             , a.READ_DT as readDt
             , a.CHANNEL as channel
             , FNC_GET_CODE_NM(a.CHANNEL) as channelNm
-            , a.MESUREMENT_POINT_ID as maeasurementPointId
+            , a.MESUREMENT_POINT_ID as measurementPointId
             , a.METER_SERIAL as meterSerial
             , a.CAPTURED_DIV as captureDiv
             , a.METER_VALUE as meterValue

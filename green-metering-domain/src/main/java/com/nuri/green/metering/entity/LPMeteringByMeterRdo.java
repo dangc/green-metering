@@ -16,8 +16,8 @@ public class LPMeteringByMeterRdo {
     private String channelNm;
     private String measurementPointId;
     private Integer captureDiv;
-    private String meterValue;
-    private String meterValueInterval;
+    private Double meterValue;
+    private Double meterValueInterval;
     private String meterStatus;
     private Integer lpInterval;
     private String locationId;

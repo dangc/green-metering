@@ -82,7 +82,7 @@
             , ifnull(date_format(a.READ_DT, '%y-%m-%d %H:%i:%s'),'') as readDt
             , a.CHANNEL as channel
             , FNC_GET_CODE_NM(a.CHANNEL) as channelNm
-            , a.MESUREMENT_POINT_ID as maeasurementPointId
+            , a.MESUREMENT_POINT_ID as measurementPointId
             , a.METER_SERIAL as meterSerial
             , a.CAPTURED_DIV as captureDiv
             , a.METER_VALUE as meterValue
@@ -110,7 +110,7 @@
         SELECT
             meterId
             , readDt
-            , maeasurementPointId
+            , measurementPointId
             , meterSerial
             , captureDiv
             , MAX(meterValue1) as meterValueCh1
@@ -136,7 +136,7 @@
                     COUNT(a.CHANNEL),
                     a.METER_ID AS meterId
                     , IFNULL(DATE_FORMAT(a.READ_DT, '%y-%m-%d %H:%i:%s'),'') AS readDt
-                    , a.MESUREMENT_POINT_ID AS maeasurementPointId
+                    , a.MESUREMENT_POINT_ID AS measurementPointId
                     , a.METER_SERIAL AS meterSerial
                     , a.CAPTURED_DIV AS captureDiv
                     , CASE WHEN CHANNEL = 'CH001' THEN a.METER_VALUE ELSE NULL END AS meterValue1
@@ -159,7 +159,13 @@
                     , a.DEVICE_SERIAL AS deviceSerial
                 FROM gnd_meter_value a
                 LEFT OUTER JOIN gnd_apt_info b ON a.APT_NO = b.APT_NO
-                <include refid="base_where_list" />
+                WHERE 1=1
+                <if test="meterId != null" >
+                    AND a.METER_ID = #{meterId}
+                </if>
+                <if test="startDate != null and endDate != null" >
+                    AND a.READ_DT BETWEEN #{startDate} AND #{endDate}
+                </if>
                 GROUP BY
                     a.METER_ID,
                     IFNULL(DATE_FORMAT(a.READ_DT, '%y-%m-%d %H:%i:%s'),''),
@@ -181,7 +187,7 @@
         GROUP BY
             meterId
             , readDt
-            , maeasurementPointId
+            , measurementPointId
             , meterSerial
             , captureDiv
             , meterStatus
@@ -201,7 +207,7 @@
         SELECT
             a.meter_id
             , a.read_dt
-            , a.mesurement_point_id
+            , a.mesurement_point_id as measurementPointId
             , a.meter_serial
             , a.captured_div
             , a.direction
@@ -251,7 +257,7 @@
         SELECT
             meter_id
             , read_dt
-            , mesurement_point_id
+            , mesurement_point_id as measurementPointId
             , meter_serial
             , captured_div
             , active_pwr_tot
