@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <properties>
+        <property name="prop.dt" value="%Y%m%d%H%i%s"></property>
+    </properties>
+
+    <settings>
+        <!-- 자동으로 카멜케이스 규칙으로 변환 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <package name="com.nuri.green.metering.store.jpo"/>
+    </typeAliases>
+
+    <mappers>
+        <mapper resource="mybatis/mariadb/MeterMapper.xml" />
+        <mapper resource="mybatis/mariadb/MeterAptMapper.xml" />
+    </mappers>
+
+</configuration>

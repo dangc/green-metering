@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--***********************************
+* @Copyright : nuritelecom
+* @ProjectName : lwm2m-gateway-store
+* @FileName : DeviceMapper.xml
+* @Author : jhdang
+* @Date : 2021-01
+************************************-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nuri.green.metering.store.mapper.MeterAptMapper">
+
+    <sql id="base_where_list">
+        <where>
+            <if test="locationId != null and locationId != ''" >
+                AND a.location_id = #{locationId}
+            </if>
+
+            <!--<if test="locationNm != null and locationNm != ''" >
+                AND a.location_nm like concat(#{locationNm},'%')
+            </if>
+
+            <if test="location1 != null and location1 != ''" >
+                AND a.location_1 = #{location1}
+            </if>
+
+            <if test="location2 != null and location2 != ''" >
+                AND a.location_2 = #{location2}
+            </if>-->
+
+            <if test="aptNo != null and aptNo != ''" >
+                AND a.APT_NO = #{aptNo}
+            </if>
+
+            <if test="channel != null and channel != ''" >
+                AND a.CHANNEL = #{channel}
+            </if>
+
+            <if test="eventCd != null and eventCd != ''" >
+                AND a.EVENT_CD = #{eventCd}
+            </if>
+
+            <if test="meterId != null" >
+                AND a.METER_ID = #{meterId}
+            </if>
+
+            <if test="measurementPointId != null" >
+                AND a.MESUREMENT_POINT_ID = #{measurementPointId}
+            </if>
+
+            <if test="startDate != null and endDate != null" >
+                AND a.READ_DT BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="base_where_list_event">
+        <where>
+            <if test="eventCd != null and eventCd != ''" >
+                AND a.EVENT_CD = #{eventCd}
+            </if>
+
+            <if test="meterId != null" >
+                AND a.METER_ID = #{meterId}
+            </if>
+
+            <if test="startDate != null and endDate != null" >
+                AND a.EVENT_DT BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="order_by_list">
+        <if test="order != null" >
+            <foreach collection="order" item="orderby" open="order by" index="index" separator=",">
+                ${orderby.sort} ${orderby.dir}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="page_limit">
+        <if test="page != null" >
+            LIMIT #{page.offset}, #{page.limit}
+        </if>
+    </sql>
+
+    <select id="getLPMeteringByApt" resultType="lpMeteringAptByMeterJpo" parameterType="lpMeteringAptByMeterJpo">
+        SELECT
+            a.METER_ID as meterId
+            , a.READ_DT as readDt
+            , a.CHANNEL as channel
+            , FNC_GET_CODE_NM(a.CHANNEL) as channelNm
+            , a.MESUREMENT_POINT_ID as maeasurementPointId
+            , a.METER_SERIAL as meterSerial
+            , a.CAPTURED_DIV as captureDiv
+            , a.METER_VALUE as meterValue
+            , a.METER_VALUE_INTERVAL as meterValueInterval
+            , a.METER_STATUS as meterStatus
+            , a.LP_INTERVAL as lpInterval
+            , a.LOCATION_ID as locationId
+            , FNC_GET_LOCATION_NM(a.LOCATION_ID) as locationNm
+            , a.APT_NO as aptNo
+            , b.APT_NM AS aptNm
+            , a.MTIME as mtime
+            , a.ITIME as itime
+            , a.DEVICE_ID as deviceId
+            , a.DEVICE_SERIAL as deviceSerial
+            , a.REG_DT as regDt
+            , a.UPDATE_DT as updateDt
+        FROM R1.gnd_meter_value a
+        LEFT OUTER JOIN gnd_apt_info b ON a.APT_NO = b.APT_NO
+        <include refid="base_where_list" />
+        <include refid="order_by_list" />
+        <include refid="page_limit" />
+    </select>
+
+    <select id="getLPMeteringAptBilling" resultType="lpMeteringAptBillingJpo" parameterType="lpMeteringAptBillingJpo">
+        SELECT
+            meter_id
+            , read_dt
+            , mesurement_point_id
+            , meter_serial
+            , captured_div
+            , direction
+            , active_pwr_tot
+            , apprent_pwr_tot
+            , lead_pwr_tot
+            , lagging_pwr_tot
+            , pf_pwr_tot
+            , active_pwr_rate1
+            , apprent_pwr_rate1
+            , lead_pwr_rate1
+            , lagging_pwr_rate1
+            , pf_pwr_rate1
+            , active_pwr_rate2
+            , apprent_pwr_rate2
+            , lead_pwr_rate2
+            , lagging_pwr_rate2
+            , pf_pwr_rate2
+            , active_pwr_rate3
+            , apprent_pwr_rate3
+            , lead_pwr_rate3
+            , lagging_pwr_rate3
+            , pf_pwr_rate3
+            , active_pwr_rate4
+            , apprent_pwr_rate4
+            , lead_pwr_rate4
+            , lagging_pwr_rate4
+            , pf_pwr_rate4
+            , mtime
+            , itime
+            , device_id
+            , device_serial
+            , location_id
+            , apt_no
+            , reg_dt
+            , update_dt
+        FROM R1.gnd_meter_billing a
+        <include refid="base_where_list" />
+        <include refid="order_by_list" />
+        <include refid="page_limit" />
+    </select>
+
+    <select id="getLPMeteringAptMonthlyDemand" resultType="lpMeteringAptMonthlyDemandJpo" parameterType="lpMeteringAptMonthlyDemandJpo">
+        SELECT
+            meter_id
+            , read_dt
+            , mesurement_point_id
+            , meter_serial
+            , captured_div
+            , active_pwr_tot
+            , active_pwr_time
+            , active_pwr_cum
+            , active_pwr_rate1
+            , active_pwr_time_rate1
+            , active_pwr_cum_rate1
+            , active_pwr_rate2
+            , active_pwr_time_rate2
+            , active_pwr_cum_rate2
+            , active_pwr_rate3
+            , active_pwr_time_rate3
+            , active_pwr_cum_rate3
+            , active_pwr_rate4
+            , active_pwr_time_rate4
+            , active_pwr_cum_rate4
+            , apparent_pwr_total
+            , apparent_pwr_time
+            , apparent_pwr_cum
+            , apparent_pwr_rate1
+            , apparent_pwr_time_rate1
+            , apparent_pwr_cum_rate1
+            , apparent_pwr_rate2
+            , apparent_pwr_time_rate2
+            , apparent_pwr_cum_rate2
+            , apparent_pwr_rate3
+            , apparent_pwr_time_rate3
+            , apparent_pwr_cum_rate3
+            , apparent_pwr_rate4
+            , apparent_pwr_time_rate4
+            , apparent_pwr_cum_rate4
+            , mtime
+            , itime
+            , device_id
+            , device_serial
+            , location_id
+            , apt_no
+            , reg_dt
+            , update_dt
+        FROM R1.gnd_meter_monthly_demand a
+        <include refid="base_where_list" />
+        <include refid="order_by_list" />
+        <include refid="page_limit" />
+    </select>
+
+    <select id="getLPMeteringAptEventLog" resultType="lpMeteringAptEventLogJpo" parameterType="lpMeteringAptEventLogJpo">
+        SELECT
+            event_dt
+            , meter_id
+            , event_cd
+            , meter_serial
+            , event_msg
+            , device_id
+            , device_serial
+            , location_id
+            , FNC_GET_LOCATION_NM(location_id) as locationNm
+            , apt_no
+            , reg_dt
+            , update_dt
+        FROM R1.gnd_meter_event_log a
+        <include refid="base_where_list_event" />
+        <include refid="order_by_list" />
+        <include refid="page_limit" />
+    </select>
+
+</mapper>

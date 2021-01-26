@@ -1,0 +1,58 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /green
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://172.16.10.191:8761/eureka
+    enabled: true
+spring:
+  profiles:
+    active: local
+  application:
+    name: green-metering
+  main:
+    allow-bean-definition-overriding: true
+---
+spring:
+  profiles: local
+  # jdbc
+  datasource:
+    hikari:
+      # jdbc-master
+      region:
+        dirver-class-name: org.mariadb.jdbc.Driver
+        jdbc-url: jdbc:mariadb://172.16.10.191:3306/R1
+        username: r1
+        password: green!!20r1
+        idleTimeout: 10000
+        connection-timeout: 10000
+        validation-timeout: 10000
+        maxLifetime: 580000
+        maximumPoolSize: 20
+        minimumIdle: 10
+#mybatis config
+mybatis:
+  config-location: classpath:mybatis/mariadb/MapperConfig.xml
+---
+spring:
+  profiles: dev
+  # datasource
+  datasource:
+    # jdbc-master
+    hikari:
+      master:
+        dirver-class-name: org.mariadb.jdbc.Driver
+        jdbc-url: jdbc:mariadb://172.16.10.191:3306/MASTER
+        username: master
+        password: green!!20master
+        idleTimeout: 10000
+        connection-timeout: 10000
+        validation-timeout: 10000
+        maxLifetime: 580000
+        maximumPoolSize: 20
+        minimumIdle: 10
+#mybatis config
+mybatis:
+  config-location: classpath:mybatis/mariadb/MapperConfig.xml
