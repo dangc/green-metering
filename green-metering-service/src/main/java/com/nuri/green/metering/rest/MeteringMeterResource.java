@@ -37,7 +37,13 @@ public class MeteringMeterResource {
         result.setDatas(this.meterService.getLPMeteringByMeter(lpMetering));
         result.setTotalCnt(result.getDatas().size());
 
-        ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
+        ResponseMessage responseMessage = null;
+
+        if (result.getDatas() != null && result.getDatas().size() != 0) {
+            responseMessage = new ResponseMessage(ResultCode.Y, result);
+        } else {
+            responseMessage = new ResponseMessage(ResultCode.N, result);
+        }
 
         return responseMessage;
     }
@@ -55,7 +61,13 @@ public class MeteringMeterResource {
         result.setDatas(this.meterService.getLPMeteringByChannel(lpMeteringByChannel));
         result.setTotalCnt(result.getDatas().size());
 
-        ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
+        ResponseMessage responseMessage = null;
+
+        if (result.getDatas() != null && result.getDatas().size() != 0) {
+            responseMessage = new ResponseMessage(ResultCode.Y, result);
+        } else {
+            responseMessage = new ResponseMessage(ResultCode.N, result);
+        }
 
         return responseMessage;
     }
@@ -73,7 +85,13 @@ public class MeteringMeterResource {
         result.setDatas(this.meterService.getLPMeteringBilling(lpMeteringByChannel));
         result.setTotalCnt(result.getDatas().size());
 
-        ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
+        ResponseMessage responseMessage = null;
+
+        if (result.getDatas() != null && result.getDatas().size() != 0) {
+            responseMessage = new ResponseMessage(ResultCode.Y, result);
+        } else {
+            responseMessage = new ResponseMessage(ResultCode.N, result);
+        }
 
         return responseMessage;
     }
@@ -91,7 +109,13 @@ public class MeteringMeterResource {
         result.setDatas(this.meterService.getLPMeteringMonthlyDemand(lpMeteringByChannel));
         result.setTotalCnt(result.getDatas().size());
 
-        ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
+        ResponseMessage responseMessage = null;
+
+        if (result.getDatas() != null && result.getDatas().size() != 0) {
+            responseMessage = new ResponseMessage(ResultCode.Y, result);
+        } else {
+            responseMessage = new ResponseMessage(ResultCode.N, result);
+        }
 
         return responseMessage;
     }
@@ -109,7 +133,13 @@ public class MeteringMeterResource {
         result.setDatas(this.meterService.getLPMeteringEventLog(lpMeteringEvent));
         result.setTotalCnt(result.getDatas().size());
 
-        ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
+        ResponseMessage responseMessage = null;
+
+        if (result.getDatas() != null && result.getDatas().size() != 0) {
+            responseMessage = new ResponseMessage(ResultCode.Y, result);
+        } else {
+            responseMessage = new ResponseMessage(ResultCode.N, result);
+        }
 
         return responseMessage;
     }
@@ -127,7 +157,13 @@ public class MeteringMeterResource {
         result.setDatas(this.meterService.getLPMeteringChannel(lpChannel));
         result.setTotalCnt(result.getDatas().size());
 
-        ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
+        ResponseMessage responseMessage = null;
+
+        if (result.getDatas() != null && result.getDatas().size() != 0) {
+            responseMessage = new ResponseMessage(ResultCode.Y, result);
+        } else {
+            responseMessage = new ResponseMessage(ResultCode.N, result);
+        }
 
         return responseMessage;
     }

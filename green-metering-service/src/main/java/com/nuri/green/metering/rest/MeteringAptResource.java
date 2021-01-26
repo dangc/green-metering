@@ -37,7 +37,13 @@ public class MeteringAptResource {
         result.setDatas(this.meterAptService.getLPMeteringByApt(lpMeteringApt));
         result.setTotalCnt(result.getDatas().size());
 
-        ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
+        ResponseMessage responseMessage = null;
+
+        if (result.getDatas() != null && result.getDatas().size() != 0) {
+            responseMessage = new ResponseMessage(ResultCode.Y, result);
+        } else {
+            responseMessage = new ResponseMessage(ResultCode.N, result);
+        }
 
         return responseMessage;
     }
@@ -55,7 +61,13 @@ public class MeteringAptResource {
         result.setDatas(this.meterAptService.getLPMeteringAptBilling(lpMeteringAptBilling));
         result.setTotalCnt(result.getDatas().size());
 
-        ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
+        ResponseMessage responseMessage = null;
+
+        if (result.getDatas() != null && result.getDatas().size() != 0) {
+            responseMessage = new ResponseMessage(ResultCode.Y, result);
+        } else {
+            responseMessage = new ResponseMessage(ResultCode.N, result);
+        }
 
         return responseMessage;
     }
@@ -73,7 +85,13 @@ public class MeteringAptResource {
         result.setDatas(this.meterAptService.getLPMeteringAptMonthlyDemand(lpMeteringAptBilling));
         result.setTotalCnt(result.getDatas().size());
 
-        ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
+        ResponseMessage responseMessage = null;
+
+        if (result.getDatas() != null && result.getDatas().size() != 0) {
+            responseMessage = new ResponseMessage(ResultCode.Y, result);
+        } else {
+            responseMessage = new ResponseMessage(ResultCode.N, result);
+        }
 
         return responseMessage;
     }
@@ -91,7 +109,13 @@ public class MeteringAptResource {
         result.setDatas(this.meterAptService.getLPMeteringAptEventLog(lpMeteringAptEvent));
         result.setTotalCnt(result.getDatas().size());
 
-        ResponseMessage responseMessage = new ResponseMessage(ResultCode.Y, result);
+        ResponseMessage responseMessage = null;
+
+        if (result.getDatas() != null && result.getDatas().size() != 0) {
+            responseMessage = new ResponseMessage(ResultCode.Y, result);
+        } else {
+            responseMessage = new ResponseMessage(ResultCode.N, result);
+        }
 
         return responseMessage;
     }
