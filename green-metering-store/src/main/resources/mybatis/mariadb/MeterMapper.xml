@@ -15,18 +15,6 @@
                 AND a.location_id = #{locationId}
             </if>
 
-            <!--<if test="locationNm != null and locationNm != ''" >
-                AND a.location_nm like concat(#{locationNm},'%')
-            </if>
-
-            <if test="location1 != null and location1 != ''" >
-                AND a.location_1 = #{location1}
-            </if>
-
-            <if test="location2 != null and location2 != ''" >
-                AND a.location_2 = #{location2}
-            </if>-->
-
             <if test="channel != null and channel != ''" >
                 AND a.CHANNEL = #{channel}
             </if>
@@ -78,7 +66,6 @@
     <select id="getLPMeteringByMeter" resultType="lpMeteringByMeterJpo" parameterType="lpMeteringByMeterJpo">
         SELECT
             a.METER_ID as meterId
-<!--            , READ_DT as readDt-->
             , ifnull(date_format(a.READ_DT, '%y-%m-%d %H:%i:%s'),'') as readDt
             , a.CHANNEL as channel
             , FNC_GET_CODE_NM(a.CHANNEL) as channelNm
@@ -93,12 +80,12 @@
             , FNC_GET_LOCATION_NM(a.LOCATION_ID) as locationNm
             , a.APT_NO as aptNo
             , b.APT_NM AS aptNm
-            , ifnull(date_format(a.MTIME, '%y-%m-%d %H:%i:%s'),'') as mtime
-            , a.ITIME as itime
-            , a.DEVICE_ID as deviceId
-            , a.DEVICE_SERIAL as deviceSerial
-            , a.REG_DT as regDt
-            , a.UPDATE_DT as updateDt
+            , DATE_FORMAT(a.mtime, '%y%m%d%H%i%s') AS mtime
+            , DATE_FORMAT(a.itime, '%y%m%d%H%i%s') AS itime
+            , a.DEVICE_ID AS deviceId
+            , a.DEVICE_SERIAL AS deviceSerial
+            , DATE_FORMAT(a.REG_DT, '%y%m%d%H%i%s') as regDt
+            , DATE_FORMAT(a.UPDATE_DT, '%y%m%d%H%i%s') as updateDt
         FROM gnd_meter_value a
         LEFT OUTER JOIN gnd_apt_info b ON a.APT_NO = b.APT_NO
         <include refid="base_where_list" />
@@ -131,11 +118,13 @@
             , itime
             , deviceId
             , deviceSerial
+            , regDt
+            , updateDt
         FROM(
                 SELECT
                     COUNT(a.CHANNEL),
                     a.METER_ID AS meterId
-                    , IFNULL(DATE_FORMAT(a.READ_DT, '%y-%m-%d %H:%i:%s'),'') AS readDt
+                    , IFNULL(DATE_FORMAT(a.READ_DT, '%y%m%d%H%i%s'),'') AS readDt
                     , a.MESUREMENT_POINT_ID AS measurementPointId
                     , a.METER_SERIAL AS meterSerial
                     , a.CAPTURED_DIV AS captureDiv
@@ -153,10 +142,12 @@
                     , FNC_GET_LOCATION_NM(a.LOCATION_ID) AS locationNm
                     , a.APT_NO AS aptNo
                     , b.APT_NM AS aptNm
-                    , IFNULL(DATE_FORMAT(a.MTIME, '%y-%m-%d %H:%i:%s'),'') AS mtime
-                    , a.ITIME AS itime
+                    , DATE_FORMAT(a.MTIME, '%y%m%d%H%i%s') AS mtime
+                    , DATE_FORMAT(a.ITIME, '%y%m%d%H%i%s') AS itime
                     , a.DEVICE_ID AS deviceId
                     , a.DEVICE_SERIAL AS deviceSerial
+                    , DATE_FORMAT(a.REG_DT, '%y%m%d%H%i%s') as regDt
+                    , DATE_FORMAT(a.UPDATE_DT, '%y%m%d%H%i%s') as updateDt
                 FROM gnd_meter_value a
                 LEFT OUTER JOIN gnd_apt_info b ON a.APT_NO = b.APT_NO
                 WHERE 1=1
@@ -167,9 +158,9 @@
                     AND a.READ_DT BETWEEN #{startDate} AND #{endDate}
                 </if>
                 GROUP BY
-                    a.METER_ID,
-                    IFNULL(DATE_FORMAT(a.READ_DT, '%y-%m-%d %H:%i:%s'),''),
-                    a.MESUREMENT_POINT_ID, a.METER_SERIAL, a.CAPTURED_DIV
+                    a.METER_ID
+                    , IFNULL(DATE_FORMAT(a.READ_DT, '%y-%m-%d %H:%i:%s'),'')
+                    , a.MESUREMENT_POINT_ID, a.METER_SERIAL, a.CAPTURED_DIV
                     , CASE WHEN CHANNEL = 'CH001' THEN a.METER_VALUE ELSE NULL END
                     , CASE WHEN CHANNEL = 'CH002' THEN a.METER_VALUE ELSE NULL END
                     , CASE WHEN CHANNEL = 'CH003' THEN a.METER_VALUE ELSE NULL END
@@ -179,9 +170,12 @@
                     , CASE WHEN CHANNEL = 'CH003' THEN a.METER_VALUE_INTERVAL ELSE NULL END
                     , CASE WHEN CHANNEL = 'CH004' THEN a.METER_VALUE_INTERVAL ELSE NULL END
                     , a.METER_STATUS, a.LP_INTERVAL, a.LOCATION_ID, FNC_GET_LOCATION_NM(a.LOCATION_ID)
-                    , a.APT_NO, b.APT_NM,
-                    IFNULL(DATE_FORMAT(a.MTIME, '%y-%m-%d %H:%i:%s'),'')
-                    , a.ITIME, a.DEVICE_ID, a.DEVICE_SERIAL
+                    , a.APT_NO, b.APT_NM
+                    , DATE_FORMAT(a.MTIME, '%y%m%d%H%i%s')
+                    , DATE_FORMAT(a.ITIME, '%y%m%d%H%i%s')
+                    , a.DEVICE_ID, a.DEVICE_SERIAL
+                    , DATE_FORMAT(a.REG_DT, '%y%m%d%H%i%s')
+                    , DATE_FORMAT(a.UPDATE_DT, '%y%m%d%H%i%s')
                 ORDER BY readDt, channel
         ) A
         GROUP BY
@@ -206,7 +200,7 @@
     <select id="getLPMeteringBilling" resultType="lpMeteringBillingJpo" parameterType="lpMeteringBillingJpo">
         SELECT
             a.meter_id
-            , a.read_dt
+            , IFNULL(DATE_FORMAT(a.read_dt, '%y%m%d%H%i%s'),'') AS readDt
             , a.mesurement_point_id as measurementPointId
             , a.meter_serial
             , a.captured_div
@@ -236,8 +230,8 @@
             , a.lead_pwr_rate4
             , a.lagging_pwr_rate4
             , a.pf_pwr_rate4
-            , a.mtime
-            , a.itime
+            , DATE_FORMAT(a.mtime, '%y%m%d%H%i%s') AS mtime
+            , DATE_FORMAT(a.itime, '%y%m%d%H%i%s') AS itime
             , a.device_id
             , a.device_serial
             , a.location_id
@@ -255,52 +249,53 @@
 
     <select id="getLPMeteringMonthlyDemand" resultType="lpMeteringMonthlyDemandJpo" parameterType="lpMeteringMonthlyDemandJpo">
         SELECT
-            meter_id
-            , read_dt
-            , mesurement_point_id as measurementPointId
-            , meter_serial
-            , captured_div
-            , active_pwr_tot
-            , active_pwr_time
-            , active_pwr_cum
-            , active_pwr_rate1
-            , active_pwr_time_rate1
-            , active_pwr_cum_rate1
-            , active_pwr_rate2
-            , active_pwr_time_rate2
-            , active_pwr_cum_rate2
-            , active_pwr_rate3
-            , active_pwr_time_rate3
-            , active_pwr_cum_rate3
-            , active_pwr_rate4
-            , active_pwr_time_rate4
-            , active_pwr_cum_rate4
-            , apparent_pwr_total
-            , apparent_pwr_time
-            , apparent_pwr_cum
-            , apparent_pwr_rate1
-            , apparent_pwr_time_rate1
-            , apparent_pwr_cum_rate1
-            , apparent_pwr_rate2
-            , apparent_pwr_time_rate2
-            , apparent_pwr_cum_rate2
-            , apparent_pwr_rate3
-            , apparent_pwr_time_rate3
-            , apparent_pwr_cum_rate3
-            , apparent_pwr_rate4
-            , apparent_pwr_time_rate4
-            , apparent_pwr_cum_rate4
-            , mtime
-            , itime
-            , device_id
-            , device_serial
-            , location_id
-            , FNC_GET_LOCATION_NM(LOCATION_ID) as locationNm
-            , apt_no
-<!--            , b.APT_NM AS aptNm-->
-            , reg_dt
-            , update_dt
+            a.meter_id
+            , IFNULL(DATE_FORMAT(a.read_dt, '%y%m%d%H%i%s'),'') AS readDt
+            , a.mesurement_point_id as measurementPointId
+            , a.meter_serial
+            , a.captured_div
+            , a.active_pwr_tot
+            , a.active_pwr_time
+            , a.active_pwr_cum
+            , a.active_pwr_rate1
+            , a.active_pwr_time_rate1
+            , a.active_pwr_cum_rate1
+            , a.active_pwr_rate2
+            , a.active_pwr_time_rate2
+            , a.active_pwr_cum_rate2
+            , a.active_pwr_rate3
+            , a.active_pwr_time_rate3
+            , a.active_pwr_cum_rate3
+            , a.active_pwr_rate4
+            , a.active_pwr_time_rate4
+            , a.active_pwr_cum_rate4
+            , a.apparent_pwr_total
+            , a.apparent_pwr_time
+            , a.apparent_pwr_cum
+            , a.apparent_pwr_rate1
+            , a.apparent_pwr_time_rate1
+            , a.apparent_pwr_cum_rate1
+            , a.apparent_pwr_rate2
+            , a.apparent_pwr_time_rate2
+            , a.apparent_pwr_cum_rate2
+            , a.apparent_pwr_rate3
+            , a.apparent_pwr_time_rate3
+            , a.apparent_pwr_cum_rate3
+            , a.apparent_pwr_rate4
+            , a.apparent_pwr_time_rate4
+            , a.apparent_pwr_cum_rate4
+            , DATE_FORMAT(a.mtime, '%y%m%d%H%i%s') AS mtime
+            , DATE_FORMAT(a.itime, '%y%m%d%H%i%s') AS itime
+            , a.device_id
+            , a.device_serial
+            , a.location_id
+            , FNC_GET_LOCATION_NM(a.location_id) as locationNm
+            , a.apt_no
+            , b.APT_NM AS aptNm
+            , a.reg_dt
+            , a.update_dt
         FROM gnd_meter_monthly_demand a
+        LEFT OUTER JOIN gnd_apt_info b ON a.APT_NO = b.APT_NO
         <include refid="base_where_list" />
         <include refid="order_by_list" />
         <include refid="page_limit" />
@@ -308,7 +303,7 @@
 
     <select id="getLPMeteringEventLog" resultType="lpMeteringEventLogJpo" parameterType="lpMeteringEventLogJpo">
         SELECT
-            event_dt
+            DATE_FORMAT(a.EVENT_DT, '%y%m%d%H%i%s') as event_dt
             , meter_id
             , event_cd
             , meter_serial
@@ -318,8 +313,8 @@
             , location_id
             , FNC_GET_LOCATION_NM(location_id) as locationNm
             , apt_no
-            , reg_dt
-            , update_dt
+            , DATE_FORMAT(a.REG_DT, '%y%m%d%H%i%s') as regDt
+            , DATE_FORMAT(a.UPDATE_DT, '%y%m%d%H%i%s') as updateDt
         FROM gnd_meter_event_log a
         <include refid="base_where_list_event" />
         <include refid="order_by_list" />
