@@ -128,11 +128,11 @@
                     , a.MESUREMENT_POINT_ID AS measurementPointId
                     , a.METER_SERIAL AS meterSerial
                     , a.CAPTURED_DIV AS captureDiv
-                    <foreach collection="channels" item="item" index="index" open="," separator=",">
-                        CASE WHEN CHANNEL = #{item.channel} THEN a.METER_VALUE ELSE NULL END AS #{item.column1}
+                    <foreach collection="channels" item="item" index="index">
+                        , CASE WHEN CHANNEL = #{item.channel} THEN a.METER_VALUE ELSE NULL END AS #{item.column1}
                     </foreach>
                     <foreach collection="channels" item="item" index="index">
-                        ,CASE WHEN CHANNEL = #{item.channel} THEN a.METER_VALUE_INTERVAL ELSE NULL END AS #{item.column2}
+                        , CASE WHEN CHANNEL = #{item.channel} THEN a.METER_VALUE_INTERVAL ELSE NULL END AS #{item.column2}
                     </foreach>
                     , a.METER_STATUS AS meterStatus
                     , a.LP_INTERVAL AS lpInterval
@@ -159,11 +159,11 @@
                     a.METER_ID
                     , IFNULL(DATE_FORMAT(a.READ_DT, '%y-%m-%d %H:%i:%s'),'')
                     , a.MESUREMENT_POINT_ID, a.METER_SERIAL, a.CAPTURED_DIV
-                    <foreach collection="channels" item="item" index="index" open="," separator=",">
-                        CASE WHEN CHANNEL = #{item.channel} THEN a.METER_VALUE ELSE NULL END
+                    <foreach collection="channels" item="item" index="index">
+                        , CASE WHEN CHANNEL = #{item.channel} THEN a.METER_VALUE ELSE NULL END
                     </foreach>
                     <foreach collection="channels" item="item" index="index">
-                        ,CASE WHEN CHANNEL = #{item.channel} THEN a.METER_VALUE_INTERVAL ELSE NULL END
+                        , CASE WHEN CHANNEL = #{item.channel} THEN a.METER_VALUE_INTERVAL ELSE NULL END
                     </foreach>
                     , a.METER_STATUS, a.LP_INTERVAL, a.LOCATION_ID, FNC_GET_LOCATION_NM(a.LOCATION_ID)
                     , a.APT_NO, b.APT_NM
