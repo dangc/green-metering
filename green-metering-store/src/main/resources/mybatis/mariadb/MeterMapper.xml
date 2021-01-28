@@ -100,14 +100,14 @@
             , measurementPointId
             , meterSerial
             , captureDiv
-            , MAX(meterValue1) as meterValueCh1
-            , MAX(meterValue2) as meterValueCh2
-            , MAX(meterValue3) as meterValueCh3
-            , MAX(meterValue4) as meterValueCh4
-            , MAX(meterValueInterval1) as meterValueIntervalCh1
-            , MAX(meterValueInterval2) as meterValueIntervalCh2
-            , MAX(meterValueInterval3) as meterValueIntervalCh3
-            , MAX(meterValueInterval4) as meterValueIntervalCh4
+            , MAX(meterValueCh1) as meterValueCh1
+            , MAX(meterValueCh2) as meterValueCh2
+            , MAX(meterValueCh3) as meterValueCh3
+            , MAX(meterValueCh4) as meterValueCh4
+            , MAX(meterValueIntervalCh1) as meterValueIntervalCh1
+            , MAX(meterValueIntervalCh2) as meterValueIntervalCh2
+            , MAX(meterValueIntervalCh3) as meterValueIntervalCh3
+            , MAX(meterValueIntervalCh4) as meterValueIntervalCh4
             , meterStatus
             , lpInterval
             , locationId
@@ -128,14 +128,12 @@
                     , a.MESUREMENT_POINT_ID AS measurementPointId
                     , a.METER_SERIAL AS meterSerial
                     , a.CAPTURED_DIV AS captureDiv
-                    , CASE WHEN CHANNEL = 'CH001' THEN a.METER_VALUE ELSE NULL END AS meterValue1
-                    , CASE WHEN CHANNEL = 'CH002' THEN a.METER_VALUE ELSE NULL END AS meterValue2
-                    , CASE WHEN CHANNEL = 'CH003' THEN a.METER_VALUE ELSE NULL END AS meterValue3
-                    , CASE WHEN CHANNEL = 'CH004' THEN a.METER_VALUE ELSE NULL END AS meterValue4
-                    , CASE WHEN CHANNEL = 'CH001' THEN a.METER_VALUE_INTERVAL ELSE NULL END AS meterValueInterval1
-                    , CASE WHEN CHANNEL = 'CH002' THEN a.METER_VALUE_INTERVAL ELSE NULL END AS meterValueInterval2
-                    , CASE WHEN CHANNEL = 'CH003' THEN a.METER_VALUE_INTERVAL ELSE NULL END AS meterValueInterval3
-                    , CASE WHEN CHANNEL = 'CH004' THEN a.METER_VALUE_INTERVAL ELSE NULL END AS meterValueInterval4
+                    <foreach collection="channels" item="item" index="index" open="," separator=",">
+                        CASE WHEN CHANNEL = #{item.channel} THEN a.METER_VALUE ELSE NULL END AS #{item.column1}
+                    </foreach>
+                    <foreach collection="channels" item="item" index="index">
+                        ,CASE WHEN CHANNEL = #{item.channel} THEN a.METER_VALUE_INTERVAL ELSE NULL END AS #{item.column2}
+                    </foreach>
                     , a.METER_STATUS AS meterStatus
                     , a.LP_INTERVAL AS lpInterval
                     , a.LOCATION_ID AS locationId
@@ -161,14 +159,12 @@
                     a.METER_ID
                     , IFNULL(DATE_FORMAT(a.READ_DT, '%y-%m-%d %H:%i:%s'),'')
                     , a.MESUREMENT_POINT_ID, a.METER_SERIAL, a.CAPTURED_DIV
-                    , CASE WHEN CHANNEL = 'CH001' THEN a.METER_VALUE ELSE NULL END
-                    , CASE WHEN CHANNEL = 'CH002' THEN a.METER_VALUE ELSE NULL END
-                    , CASE WHEN CHANNEL = 'CH003' THEN a.METER_VALUE ELSE NULL END
-                    , CASE WHEN CHANNEL = 'CH004' THEN a.METER_VALUE ELSE NULL END
-                    , CASE WHEN CHANNEL = 'CH001' THEN a.METER_VALUE_INTERVAL ELSE NULL END
-                    , CASE WHEN CHANNEL = 'CH002' THEN a.METER_VALUE_INTERVAL ELSE NULL END
-                    , CASE WHEN CHANNEL = 'CH003' THEN a.METER_VALUE_INTERVAL ELSE NULL END
-                    , CASE WHEN CHANNEL = 'CH004' THEN a.METER_VALUE_INTERVAL ELSE NULL END
+                    <foreach collection="channels" item="item" index="index" open="," separator=",">
+                        CASE WHEN CHANNEL = #{item.channel} THEN a.METER_VALUE ELSE NULL END
+                    </foreach>
+                    <foreach collection="channels" item="item" index="index">
+                        ,CASE WHEN CHANNEL = #{item.channel} THEN a.METER_VALUE_INTERVAL ELSE NULL END
+                    </foreach>
                     , a.METER_STATUS, a.LP_INTERVAL, a.LOCATION_ID, FNC_GET_LOCATION_NM(a.LOCATION_ID)
                     , a.APT_NO, b.APT_NM
                     , DATE_FORMAT(a.MTIME, '%y%m%d%H%i%s')
@@ -331,9 +327,23 @@
             , use_yn
         FROM gnd_channel_config a
         WHERE 1=1
-        <if test="meterType != null" >
+        <if test="meterType != null and meterType != ''" >
             AND a.METER_TYPE = #{meterType}
         </if>
+    </select>
+
+    <select id="getMeterChannel" resultType="lpChannelJpo" parameterType="java.lang.String">
+        SELECT
+            channel
+            , channel_idx
+            , CONCAT('meterValueCh', channel_idx) as column1
+            , CONCAT('meterValueIntervalCh', channel_idx) as column2
+        FROM gnd_channel_config a
+        WHERE 1=1
+        <if test="meterType != null and meterType != ''" >
+            AND a.METER_TYPE = #{meterType}
+        </if>
+        ORDER BY channel, channel_idx
     </select>
 
     <select id="getMeterInfo" resultType="lpMeteringChannelJpo" parameterType="java.lang.String">

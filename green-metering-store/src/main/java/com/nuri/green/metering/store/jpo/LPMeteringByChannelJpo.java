@@ -10,6 +10,9 @@ import lombok.Setter;
 import org.apache.ibatis.type.Alias;
 import org.springframework.beans.BeanUtils;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -46,6 +49,7 @@ public class LPMeteringByChannelJpo extends CommonObj {
     private String eventCd;
     private String startDate;
     private String endDate;
+    private List<LPChannelJpo> channels;
 
     private String orderby; // 정렬
     private Integer offset; // offset

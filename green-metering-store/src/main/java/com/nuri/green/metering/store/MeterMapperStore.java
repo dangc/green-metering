@@ -25,9 +25,14 @@ public class MeterMapperStore implements MeterStore {
 
     @Override
     public List<LPMeteringByChannelRdo> getLPMeteringByChannel(LPMeteringByChannel lpMeteringByChannel) {
-        List<LPMeteringByChannelJpo> lpMeteringByChannelJpos = null;
+        //meterType 조회
+        LPMeteringChannelJpo lpMeteringChannelJpo = meterEventMapper.getMeterInfo(lpMeteringByChannel.getMeterId());
+        //meterType에 해당하는 channel 조회
+        List<LPChannelJpo> lpChannelJpos = meterEventMapper.getMeterChannel(lpMeteringChannelJpo.getMeterType());
 
-                lpMeteringByChannelJpos =   meterEventMapper.getLPMeteringByChannel(new LPMeteringByChannelJpo(lpMeteringByChannel));
+        LPMeteringByChannelJpo lpMeteringByChannelJpo = new LPMeteringByChannelJpo(lpMeteringByChannel);
+        lpMeteringByChannelJpo.setChannels(lpChannelJpos);
+        List<LPMeteringByChannelJpo> lpMeteringByChannelJpos = meterEventMapper.getLPMeteringByChannel(lpMeteringByChannelJpo);
         return lpMeteringByChannelJpos.stream().map(LPMeteringByChannelJpo::toDomain).collect(Collectors.toList());
     }
 

@@ -14,4 +14,5 @@ public interface MeterMapper {
     List<LPMeteringEventLogJpo> getLPMeteringEventLog(LPMeteringEventLogJpo lpMeteringEventLogJpo);
     List<LPMeteringChannelJpo> getLPMeteringChannel(LPMeteringChannelJpo lpMeteringChannelJpo);
     LPMeteringChannelJpo getMeterInfo(Integer meterId);
+    List<LPChannelJpo> getMeterChannel(String meterType);
 }
