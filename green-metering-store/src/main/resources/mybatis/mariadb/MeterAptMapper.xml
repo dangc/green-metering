@@ -32,7 +32,7 @@
             </if>
 
             <if test="measurementPointId != null" >
-                AND a.MESUREMENT_POINT_ID = #{measurementPointId}
+                AND a.MEASUREMENT_POINT_ID = #{measurementPointId}
             </if>
 
             <if test="startDate != null and endDate != null" >
@@ -77,7 +77,7 @@
             , a.READ_DT as readDt
             , a.CHANNEL as channel
             , FNC_GET_CODE_NM(a.CHANNEL) as channelNm
-            , a.MESUREMENT_POINT_ID as measurementPointId
+            , a.MEASUREMENT_POINT_ID as measurementPointId
             , a.METER_SERIAL as meterSerial
             , a.CAPTURED_DIV as captureDiv
             , a.METER_VALUE as meterValue
@@ -105,7 +105,7 @@
         SELECT
             meter_id
             , ifnull(date_format(a.READ_DT, '%y-%m-%d %H:%i:%s'),'') as readDt
-            , mesurement_point_id
+            , measurement_point_id
             , meter_serial
             , captured_div
             , direction
@@ -152,7 +152,7 @@
         SELECT
             meter_id
             , ifnull(date_format(a.READ_DT, '%y-%m-%d %H:%i:%s'),'') as readDt
-            , mesurement_point_id
+            , measurement_point_id
             , meter_serial
             , captured_div
             , active_pwr_tot

@@ -69,7 +69,7 @@
             , ifnull(date_format(a.READ_DT, '%y-%m-%d %H:%i:%s'),'') as readDt
             , a.CHANNEL as channel
             , FNC_GET_CODE_NM(a.CHANNEL) as channelNm
-            , a.MESUREMENT_POINT_ID as measurementPointId
+            , a.MEASUREMENT_POINT_ID as measurementPointId
             , a.METER_SERIAL as meterSerial
             , a.CAPTURED_DIV as captureDiv
             , a.METER_VALUE as meterValue
@@ -125,7 +125,7 @@
                     COUNT(a.CHANNEL),
                     a.METER_ID AS meterId
                     , IFNULL(DATE_FORMAT(a.READ_DT, '%y%m%d%H%i%s'),'') AS readDt
-                    , a.MESUREMENT_POINT_ID AS measurementPointId
+                    , a.MEASUREMENT_POINT_ID AS measurementPointId
                     , a.METER_SERIAL AS meterSerial
                     , a.CAPTURED_DIV AS captureDiv
                     <foreach collection="channels" item="item" index="index">
@@ -158,7 +158,7 @@
                 GROUP BY
                     a.METER_ID
                     , IFNULL(DATE_FORMAT(a.READ_DT, '%y-%m-%d %H:%i:%s'),'')
-                    , a.MESUREMENT_POINT_ID, a.METER_SERIAL, a.CAPTURED_DIV
+                    , a.MEASUREMENT_POINT_ID, a.METER_SERIAL, a.CAPTURED_DIV
                     <foreach collection="channels" item="item" index="index">
                         , CASE WHEN CHANNEL = #{item.channel} THEN a.METER_VALUE ELSE NULL END
                     </foreach>
@@ -197,7 +197,7 @@
         SELECT
             a.meter_id
             , IFNULL(DATE_FORMAT(a.read_dt, '%y%m%d%H%i%s'),'') AS readDt
-            , a.mesurement_point_id as measurementPointId
+            , a.measurement_point_id as measurementPointId
             , a.meter_serial
             , a.captured_div
             , a.direction
@@ -247,7 +247,7 @@
         SELECT
             a.meter_id
             , IFNULL(DATE_FORMAT(a.read_dt, '%y%m%d%H%i%s'),'') AS readDt
-            , a.mesurement_point_id as measurementPointId
+            , a.measurement_point_id as measurementPointId
             , a.meter_serial
             , a.captured_div
             , a.active_pwr_tot
